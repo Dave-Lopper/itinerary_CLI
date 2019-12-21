@@ -20,6 +20,13 @@ class Parser():
             for row in reader:
                 if len(row) != 3 or row[2].isnumeric() is False:
                     sys.exit('Invalid file provided, please check the format')
+
+                if '-' in list(row[0]):
+                    row[0] = row[0].replace('-', '###')
+
+                if '-' in list(row[1]):
+                    row[1] = row[1].replace('-', '###')
+
                 row[0] not in stops and stops.append(row[0])
                 row[1] not in stops and stops.append(row[1])
                 stops_itinerary = sorted([row[0], row[1]])

@@ -4,6 +4,14 @@ import sys
 class OutputManager():
     def itinerary(self, success, departure, arrival,
                   stops, duration, alternative_arrival=None):
+
+        if departure is not None and '###' in departure:
+            departure = departure.replace('###', '-')
+        if arrival is not None and '###' in arrival:
+            arrival = arrival.replace('###', '-')
+        if alternative_arrival is not None and '###' in alternative_arrival:
+            alternative_arrival = alternative_arrival.replace('###', '-')
+
         if success:
             visual_output = \
                 "Your trip from {} to {} includes {} stop(s) and will take {} minutes" \
