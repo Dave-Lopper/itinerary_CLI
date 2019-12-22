@@ -4,6 +4,29 @@ import sys
 class OutputManager():
     def itinerary(self, success, departure, arrival,
                   stops, duration, alternative_arrival=None):
+        """Gets the output of Calculator.calculate() method,
+           prints it into a user readable output and exits.
+
+            :param mode: Determines the output message.
+            :type mode:  str
+
+            :param success: Wether or not the function could find an itinerary
+                linking the two given points.
+            :param first_stop: The starting point of the itinerary
+            :param last_stop:  The ending point of the itinerary
+            :param nb_stops:   Number of connections to make in the itinerary
+            :param duration:   Number of minutes to complete the itinerary
+            :param alternative_arrival: Instanciated if success is false,
+                and an alternative itinerary could be found, if success
+                is false and alternative_arrival is none, there is no route
+                between the two given stations.
+
+            :type success:             boolean
+            :type first_stop:          str
+            :type last_stop:           str
+            :type nb_stops:            int
+            :type duration:            int
+            :type alternative_arrival: str"""
 
         if departure is not None and '###' in departure:
             departure = departure.replace('###', '-')
@@ -31,6 +54,11 @@ class OutputManager():
                 sys.exit(visual_output)
 
     def exit(self, mode):
+        """Exits with custom output message.
+
+            :param mode: Determines the output message.
+            :type mode:  str"""
+
         if mode == 'no_csv':
             sys.exit(
                 'Please provide the CSV file, try using the --help command')
@@ -46,6 +74,10 @@ class OutputManager():
             sys.exit('Invalid file provided, please check the format')
         elif mode == 'notfound_csv':
             sys.exit('CSV file not found, please check the path')
+        elif mode == 'unexisting_station':
+            sys.exit('Provided station missing from data source')
+        elif mode == 'invalid_itinerary':
+            sys.exit('Arrival and departure stations are the same')
 
     def help(self):
         visual_output = """

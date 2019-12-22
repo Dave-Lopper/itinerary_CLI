@@ -4,6 +4,25 @@ class Calculator():
         self.durations = durations
 
     def calculate(self, first_stop, last_stop):
+        """Calculates the best itinerary between two given points.
+
+        :param first_stop: The starting station of the itinerary.
+        :param last_stop:  The ending station of the itinerary.
+        :type first_stop:  str
+        :type last_stop:   str
+
+        :return:
+            - success, boolean : the function could find an itinerary
+                linking the two given points.
+            - first_stop, str : the starting point of the itinerary
+            - last_stop,  str : the ending point of the itinerary
+            - nb_stops,   int : number of connections to make in the itinerary
+            - time,       int : number of minutes to complete the itinerary
+            - alternative_arrival str : instanciated if success is false,
+                and an alternative itinerary could be found, if success
+                is false and alternative_arrival is none, there is no route
+                between the two given stations.
+        :rtype: tupple"""
         journey_length = abs(self.stops.index(
             first_stop) - self.stops.index(last_stop))
         formatted_journey = sorted([first_stop, last_stop])
@@ -57,7 +76,7 @@ class Calculator():
                                      key=lambda x: list(x.values())[0],
                                      reverse=True)
 
-            best_ride = self.select_itinerary(formatted_rides, reversed)
+            best_ride = self.select_ride(formatted_rides, reversed)
 
             if best_ride is None:
                 final_stop = list(
@@ -82,9 +101,24 @@ class Calculator():
 
         return True, first_stop, last_stop, (len(steps) - 1), time, None
 
-    def select_itinerary(self, itineraries, reversed):
-        for itinerary in itineraries:
-            stops = list(itinerary.keys())[0].split('-')
+    def select_ride(self, rides, reversed):
+        """Selects the best ride.
+
+        Selects the best ride, making sure it is not a dead-end
+        (another ride is available to continue the journey starting from the
+        ending point) among a given list of possible rides.
+
+        :param itineraries: The rides to chose from.
+        :param reversed:    Wether or not the itinerary is reversed (given to
+            the calculator.stops list's order)
+        :type itineraries:  list
+        :type reversed:     boolean
+
+        :return: a dict with the ride's stations as key,
+            and the ride length as value
+        :rtype:  dict"""
+        for ride in rides:
+            stops = list(ride.keys())[0].split('-')
             index_itinerary = 0 if reversed is True else 1
             index_next = 1 if reversed is True else 0
             next_ride = list(filter(
@@ -92,4 +126,4 @@ class Calculator():
                 list(map(lambda x: x.split('-'), list(self.durations.keys())))
             ))
             if len(next_ride) > 0:
-                return itinerary
+                return ride

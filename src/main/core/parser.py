@@ -10,6 +10,19 @@ class Parser():
         self.output_manager = OutputManager()
 
     def parse(self, file):
+        """Parses the CSV file.
+
+        Checks that the provided path is existing, and that the provided
+        file is correct.
+        Stores data in memory, escaping the '-' delimiter char that will be
+        used by the Calculator class to compute itineraries.
+        Instanciates and returns a seeded instance of Calculator class.
+
+        :param file: The path to CSV file.
+        :type  file: str
+
+        :return: seeded instance of Calculator class
+        :rtype:  src.main.core.calculator.Calculator"""
         if file.startswith('/') is False:
             file = os.path.join(os.getcwd(), file)
 

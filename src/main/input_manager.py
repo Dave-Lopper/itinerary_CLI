@@ -10,6 +10,13 @@ class InputManager():
         self.test_manager = TestManager()
 
     def input_checking(self, args):
+        """Checks the python command arguments.
+
+        :param args: returned value of sys.argv
+        :type  args: list
+
+        :return: path to CSV file
+        :rtype:  str"""
         if len(args) == 1:
             self.output_manager.exit(mode='nocsv')
 
