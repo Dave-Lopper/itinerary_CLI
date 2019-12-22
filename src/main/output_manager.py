@@ -30,6 +30,23 @@ class OutputManager():
                                                              arrival)
                 sys.exit(visual_output)
 
+    def exit(self, mode):
+        if mode == 'no_csv':
+            sys.exit(
+                'Please provide the CSV file, try using the --help command')
+        elif mode == 'invalid_command':
+            sys.exit(
+                'Invalid command format, try using the --help command')
+        elif mode == 'uknown_command':
+            sys.exit('Uknown command, try using the --help command')
+        elif mode == 'unauthorized_extension':
+            sys.exit(
+                'Invalid file provided (.csv only), try using the --help command')
+        elif mode == 'invalid_scv':
+            sys.exit('Invalid file provided, please check the format')
+        elif mode == 'notfound_csv':
+            sys.exit('CSV file not found, please check the path')
+
     def help(self):
         visual_output = """
         Hi ! Welcome in the itinerary CLI !

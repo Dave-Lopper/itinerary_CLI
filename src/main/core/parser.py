@@ -1,17 +1,20 @@
 import csv
 import os
-import sys
 
+from src.main.output_manager import OutputManager
 from .calculator import Calculator
 
 
 class Parser():
+    def __init__(self):
+        self.output_manager = OutputManager()
+
     def parse(self, file):
         if file.startswith('/') is False:
             file = os.path.join(os.getcwd(), file)
 
-        os.path.exists(file) is False and \
-            sys.exit('CSV file not found, please check the path')
+        if os.path.exists(file) is False:
+            self.output_manager.exit(mode='notfound_csv')
 
         with open(file) as csv_file:
             reader = csv.reader(csv_file, delimiter=',')
@@ -19,7 +22,7 @@ class Parser():
             durations = {}
             for row in reader:
                 if len(row) != 3 or row[2].isnumeric() is False:
-                    sys.exit('Invalid file provided, please check the format')
+                    self.output_manager.exit(mode='invalid_csv')
 
                 if '-' in list(row[0]):
                     row[0] = row[0].replace('-', '###')

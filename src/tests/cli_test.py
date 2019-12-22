@@ -11,7 +11,7 @@ def return_values(a, b):
     return 1, 2, 3, 4, 5, 6
 
 
-def exit():
+def exit(mode=None):
     sys.exit()
 
 
@@ -52,6 +52,42 @@ class TestCLI(unittest.TestCase):
                 import main
                 main.Main()
             mock_help.assert_called()
+
+    @patch('src.main.output_manager.OutputManager.exit', side_effect=exit)
+    def test_CLI_bad_params_handling_invalid_command(self, mock_exit):
+        testargs = ["main.py", "invalidcommand"]
+        with patch.object(sys, 'argv', testargs):
+            with self.assertRaises(SystemExit):
+                import main
+                main.Main()
+            mock_exit.assert_called_with(mode='invalid_command')
+
+    @patch('src.main.output_manager.OutputManager.exit', side_effect=exit)
+    def test_CLI_bad_params_handling_uknown_command(self, mock_exit):
+        testargs = ["main.py", "--invalidcommand"]
+        with patch.object(sys, 'argv', testargs):
+            with self.assertRaises(SystemExit):
+                import main
+                main.Main()
+            mock_exit.assert_called_with(mode='uknown_command')
+
+    @patch('src.main.output_manager.OutputManager.exit', side_effect=exit)
+    def test_CLI_bad_params_handling_unauthorized_extension(self, mock_exit):
+        testargs = ["main.py", "--file=sample.txt"]
+        with patch.object(sys, 'argv', testargs):
+            with self.assertRaises(SystemExit):
+                import main
+                main.Main()
+            mock_exit.assert_called_with(mode='unauthorized_extension')
+
+    @patch('src.main.output_manager.OutputManager.exit', side_effect=exit)
+    def test_CLI_bad_params_handling_no_csv(self, mock_exit):
+        testargs = ["main.py"]
+        with patch.object(sys, 'argv', testargs):
+            with self.assertRaises(SystemExit):
+                import main
+                main.Main()
+            mock_exit.assert_called_with(mode='nocsv')
 
 
 if __name__ == '__main__':
